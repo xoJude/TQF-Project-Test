@@ -26,7 +26,7 @@ const Filters = ({
       borderRadius: '8px',
       marginBottom: '20px'
     }}>
-      <h3 style={{ color: '#5f259f', marginTop: '0' }}>Filtres de recherche</h3>
+      <h3 style={{ color: '#5f259f', marginTop: '0' }}>Spots</h3>
       
       <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
         
