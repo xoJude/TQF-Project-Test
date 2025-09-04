@@ -9,7 +9,7 @@ const Table = ({ data, loading }) => {
         fontSize: '18px',
         color: '#5f259f'
       }}>
-        ⏳ Chargement des données...
+     Chargement...
       </div>
     );
   }
@@ -22,16 +22,15 @@ const Table = ({ data, loading }) => {
         fontSize: '16px',
         color: '#666'
       }}>
-        🔍 Aucun résultat trouvé. Essayez de modifier vos filtres.
+        Aucun résultat trouvé.
       </div>
     );
   }
 
-  // Fonction pour extraire les bonnes données selon le dataset
+
   const getDisplayData = (item) => {
     const fields = item.fields || {};
     
-    // Détection automatique du type de dataset
     let nom, adresse, arrondissement, info;
     
     if (fields.nom_ev) {
@@ -49,7 +48,7 @@ const Table = ({ data, loading }) => {
       info = fields.type_objet || 'Fontaine';
       
     } else if (fields.title) {
-      // Dataset: Équipements et activités  
+      // Dataset: Équipements & activités  
       nom = fields.title;
       const location = fields.locations?.[0] || {};
       adresse = location.address_street || 'Non renseigné';
@@ -57,7 +56,7 @@ const Table = ({ data, loading }) => {
       info = fields.price_type || 'Activité';
       
     } else {
-      // Fallback générique
+      
       nom = fields.nom || fields.name || fields.denomination || 'Non renseigné';
       adresse = fields.adresse || fields.address || 'Non renseigné';
       arrondissement = fields.arrondissement || 'Non renseigné';
@@ -75,7 +74,7 @@ const Table = ({ data, loading }) => {
   return (
     <div>
       <h2 style={{ color: '#5f259f' }}>
-        📍 Résultats ({data.length})
+        Résultats ({data.length})
       </h2>
       
       <div style={{ overflowX: 'auto' }}>

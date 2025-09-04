@@ -34,25 +34,26 @@ function App() {
     loadData();
   }, [selectedDataset]); // Se relance quand selectedDataset change
 
-  // Fonction pour extraire le nom selon le dataset
+  // Fonction pour extraire 
   const getSearchableName = (item) => {
     const fields = item.fields || {};
     return fields.nom_ev || fields.title || fields.modele || 
            fields.nom || fields.name || '';
   };
 
-  // Fonction pour extraire l'arrondissement selon le dataset  
+  // Fonction pour extraire l'arrondissement 
+
   const getSearchableArrondissement = (item) => {
     const fields = item.fields || {};
     
     // Espaces verts
     if (fields.nom_ev && fields.adresse_codepostal) {
-      return fields.adresse_codepostal.slice(0, 5); // "75001"
+      return fields.adresse_codepostal.slice(0, 5); 
     }
     
     // Fontaines
     if (fields.commune) {
-      const match = fields.commune.match(/(\d{5})/); // "PARIS 20EME ARRONDISSEMENT" -> "75020"
+      const match = fields.commune.match(/(\d{5})/); 
       return match ? match[1] : '';
     }
     
@@ -66,11 +67,13 @@ function App() {
   };
 
   // Appliquer les filtres quand les données ou filtres changent
+
   useEffect(() => {
     const applyFilters = () => {
-      let filtered = [...allData]; // Copie des données
+      let filtered = [...allData]; 
 
       // Filtre par terme de recherche
+
       if (searchTerm.trim()) {
         filtered = filtered.filter(item => {
           const nom = getSearchableName(item);
@@ -79,6 +82,7 @@ function App() {
       }
 
       // Filtre par arrondissement
+
       if (selectedArrondissement) {
         filtered = filtered.filter(item => {
           const arr = getSearchableArrondissement(item);
@@ -95,10 +99,13 @@ function App() {
   }, [allData, searchTerm, selectedArrondissement]); // Se relance quand un de ces éléments change
 
   // Fonctions pour gérer les changements de filtres
+
   const handleDatasetChange = (dataset) => {
     console.log('Changement dataset vers:', dataset);
     setSelectedDataset(dataset);
+    
     // Reset des autres filtres quand on change de dataset
+
     setSearchTerm('');
     setSelectedArrondissement('');
   };
@@ -134,6 +141,7 @@ function App() {
       <main style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
         
         {/* Composant des filtres */}
+
         <Filters
           selectedDataset={selectedDataset}
           searchTerm={searchTerm}
@@ -145,6 +153,7 @@ function App() {
         />
         
         {/* Tableau des résultats */}
+
         <Table data={filteredData} loading={loading} />
         
       </main>

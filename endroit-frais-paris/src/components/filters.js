@@ -30,7 +30,7 @@ const Filters = ({
       
       <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
         
-        {/* Sélecteur de dataset */}
+        {/* boutton type endroit */}
         <div>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
             Type d'endroit :
@@ -51,10 +51,10 @@ const Filters = ({
           </select>
         </div>
 
-        {/* Recherche textuelle */}
+        {/* barre de recherche */}
         <div>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Rechercher par nom :
+            Rechercher :
           </label>
           <input
             type="text"
@@ -70,7 +70,7 @@ const Filters = ({
           />
         </div>
 
-        {/* Filtre par arrondissement */}
+        {/* Arrondissement recherche */}
         <div>
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
             Arrondissement :

@@ -4,9 +4,9 @@ export const fetchDataset = async (dataset, params = {}) => {
   try {
     const url = new URL(BASE_URL);
     url.searchParams.append('dataset', dataset);
-    url.searchParams.append('rows', '50'); // Limiter à 50 résultats
+    url.searchParams.append('rows', '50'); 
     
-    // Ajouter d'autres params si nécessaire
+  
     Object.keys(params).forEach(key => {
       url.searchParams.append(key, params[key]);
     });
@@ -20,7 +20,6 @@ export const fetchDataset = async (dataset, params = {}) => {
   }
 };
 
-// Les noms corrects des datasets
 export const DATASETS = {
   ESPACES_VERTS: 'espaces_verts',
   FONTAINES: 'fontaines-a-boire', 
