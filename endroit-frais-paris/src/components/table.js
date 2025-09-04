@@ -31,12 +31,44 @@ const Table = ({ data, loading }) => {
   const getDisplayData = (item) => {
     const fields = item.fields || {};
     
+    // Détection automatique du type de dataset
+    let nom, adresse, arrondissement, info;
+    
+    if (fields.nom_ev) {
+      // Dataset: Espaces verts
+      nom = fields.nom_ev;
+      adresse = `${fields.adresse_typevoie || ''} ${fields.adresse_codepostal || ''}`.trim();
+      arrondissement = fields.adresse_codepostal?.slice(0, 5) || 'Non renseigné';
+      info = fields.type_ev || 'Espace vert';
+      
+    } else if (fields.modele || fields.type_objet) {
+      // Dataset: Fontaines
+      nom = fields.modele || 'Fontaine';
+      adresse = `${fields.voie || ''} ${fields.no_voirie_pair || ''}`.trim();
+      arrondissement = fields.commune?.match(/(\d{5})/)?.[1] || 'Non renseigné';
+      info = fields.type_objet || 'Fontaine';
+      
+    } else if (fields.title) {
+      // Dataset: Équipements et activités  
+      nom = fields.title;
+      const location = fields.locations?.[0] || {};
+      adresse = location.address_street || 'Non renseigné';
+      arrondissement = location.address_zipCode || 'Non renseigné';
+      info = fields.price_type || 'Activité';
+      
+    } else {
+      // Fallback générique
+      nom = fields.nom || fields.name || fields.denomination || 'Non renseigné';
+      adresse = fields.adresse || fields.address || 'Non renseigné';
+      arrondissement = fields.arrondissement || 'Non renseigné';
+      info = fields.type || fields.category || 'Non renseigné';
+    }
+    
     return {
-      nom: fields.nom || fields.name || fields.title || 'Non renseigné',
-      adresse: fields.adresse || fields.address || fields.address_street || 'Non renseigné',
-      arrondissement: fields.arrondissement || fields.zip_code || 'Non renseigné',
-      // Ajouter des infos spécifiques selon le type
-      info: fields.description || fields.category || fields.type || ''
+      nom: nom || 'Non renseigné',
+      adresse: adresse || 'Non renseigné',
+      arrondissement: arrondissement || 'Non renseigné',
+      info: info || 'Non renseigné'
     };
   };
 

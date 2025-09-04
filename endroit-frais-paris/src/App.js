@@ -34,6 +34,37 @@ function App() {
     loadData();
   }, [selectedDataset]); // Se relance quand selectedDataset change
 
+  // Fonction pour extraire le nom selon le dataset
+  const getSearchableName = (item) => {
+    const fields = item.fields || {};
+    return fields.nom_ev || fields.title || fields.modele || 
+           fields.nom || fields.name || '';
+  };
+
+  // Fonction pour extraire l'arrondissement selon le dataset  
+  const getSearchableArrondissement = (item) => {
+    const fields = item.fields || {};
+    
+    // Espaces verts
+    if (fields.nom_ev && fields.adresse_codepostal) {
+      return fields.adresse_codepostal.slice(0, 5); // "75001"
+    }
+    
+    // Fontaines
+    if (fields.commune) {
+      const match = fields.commune.match(/(\d{5})/); // "PARIS 20EME ARRONDISSEMENT" -> "75020"
+      return match ? match[1] : '';
+    }
+    
+    // Équipements
+    if (fields.locations && fields.locations[0]) {
+      return fields.locations[0].address_zipCode || '';
+    }
+    
+    // Fallback générique
+    return fields.arrondissement || fields.zip_code || fields.zipcode || '';
+  };
+
   // Appliquer les filtres quand les données ou filtres changent
   useEffect(() => {
     const applyFilters = () => {
@@ -42,7 +73,7 @@ function App() {
       // Filtre par terme de recherche
       if (searchTerm.trim()) {
         filtered = filtered.filter(item => {
-          const nom = item.fields?.nom || item.fields?.name || '';
+          const nom = getSearchableName(item);
           return nom.toLowerCase().includes(searchTerm.toLowerCase());
         });
       }
@@ -50,8 +81,9 @@ function App() {
       // Filtre par arrondissement
       if (selectedArrondissement) {
         filtered = filtered.filter(item => {
-          const arr = item.fields?.arrondissement || '';
-          return arr.includes(selectedArrondissement);
+          const arr = getSearchableArrondissement(item);
+          console.log('Comparaison arrondissement:', arr, 'vs', selectedArrondissement);
+          return arr === selectedArrondissement;
         });
       }
 
@@ -77,7 +109,7 @@ function App() {
   };
 
   const handleArrondissementChange = (arr) => {
-    console.log('Arrondissement:', arr);
+    console.log('Arrondissement sélectionné:', arr);
     setSelectedArrondissement(arr);
   };
 
